@@ -97,12 +97,16 @@ function renderTable() {
 	
 	
 	// Create a cell for each piece of data in the object
-	Object.values(rows[prefix]).forEach(value => {
+	E.forEach(suffix => {
+	    let word = concat_words(prefix, suffix);
 	    const cell = document.createElement('td');
-	    if (value)
-		cell.textContent = 1;
-	    else
-		cell.textContent = 0;
+	    if (word in memoized_words) {
+		if (memoized_words[word])
+		    cell.textContent = 1;
+		else
+		    cell.textContent = 0;
+	    } else
+		cell.textContent = '?';
 	    newRow.appendChild(cell);
 	});
 
@@ -121,22 +125,25 @@ function renderTable() {
     S.forEach((prefix) => {
 	alphabet.forEach(letter => {
 	    const newRow = document.createElement('tr');
-	    let word = concat_words(prefix, letter)
+	    let new_prefix = concat_words(prefix, letter)
 	    // First column contains the prefix
 	    const cell = document.createElement('td');
-	    cell.textContent = word;
+	    cell.textContent = new_prefix;
 	    newRow.appendChild(cell);
 	    
 	    // Create a cell for each piece of data in the object
-	    Object.values(rows[word]).forEach(value => {
+	    E.forEach(suffix => {
+		let word = concat_words(new_prefix, suffix);
 		const cell = document.createElement('td');
-		if (value)
-		    cell.textContent = 1;
-		else
-		    cell.textContent = 0;
+		if (word in memoized_words) {
+		    if (memoized_words[word])
+			cell.textContent = 1;
+		    else
+			cell.textContent = 0;
+		} else
+		    cell.textContent = '?';
 		newRow.appendChild(cell);
 	    });
-
 	    // Append the new row to the table body
 	    tableBody.appendChild(newRow);
 	})
@@ -188,9 +195,10 @@ async function ask_for_T(word) {
 // It uses previous knowledge or asks the user if it doesn't know yet
 async function T(s, e) {
     let word = concat_words(s, e)
-    if (! (word in memoized_words)) 
+    if (! (word in memoized_words)) {
 	memoized_words[word] = await ask_for_T(word);
-    
+        renderTable();
+    }
     return memoized_words[word];
 }
 
@@ -305,7 +313,6 @@ async function compute_rows() {
 	    }
 	}
     }
-    renderTable();
 }
 
 
@@ -355,7 +362,8 @@ document.getElementById('submitAlphabet').addEventListener('click', function() {
     
     document.getElementById('alphabet-input').classList.add('hidden');
     document.getElementById('question-section').classList.remove('hidden');
-    
+    document.getElementById('observation-table-container').classList.remove('hidden');
+    renderTable();
     L_star_algorithm();	
 });
 
