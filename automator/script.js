@@ -1,5 +1,5 @@
 // Variables for managing state
-let alphabet = [];
+let alphabet = new Set();
 
 // The set of prefixes
 let S = new Set();
@@ -253,20 +253,22 @@ async function L_star_algorithm() {
 // Function to handle alphabet submission
 document.getElementById('submitAlphabet').addEventListener('click', function() {
     const alphabetInput = document.getElementById('alphabet').value;
-    alphabet = alphabetInput.split(',').map(letter => letter.trim()).filter(Boolean); // Filter out empty strings
-    
+    let tmp_alphabet = alphabetInput.split(',').map(letter => letter.trim()).filter(Boolean); // Filter out empty strings
 
-    if (alphabet.length == 0) {
+    if (tmp_alphabet.length == 0) {
 	alert("Your alphabet is empty!");
 	return;
     }
 
-    for (const a of alphabet)
+    for (const a of tmp_alphabet)
 	if (a.length != 1) {
 	    alert("The letter '"+a+"' is not a valid letter. Please remove it.")
 	    return;
 	}
-	
+
+    for (const a of tmp_alphabet)
+	alphabet.add(a);
+    
     document.getElementById('alphabet-input').classList.add('hidden');
     document.getElementById('question-section').classList.remove('hidden');
     
@@ -277,13 +279,25 @@ document.getElementById('submitAlphabet').addEventListener('click', function() {
 //   if one is provided, add the corresponding prefixes, and go back executing L*
 document.getElementById('submitCounterexample').addEventListener('click', function() {
 
+    const cexInput = document.getElementById('counterexample').value;
+    const cexLength = cexInput.length;
+
+    if (cexLength == 0) {
+	alert("Please, enter a counterexample");
+	return;
+    }
+    
+    for (var i = 0; i < cexLength; i++)
+	if (!(alphabet.has(cexInput.charAt(i)))) {
+	    alert("The character '"+cexInput.charAt(i)+"' of your counterexample is not one the given alphabet!");
+	    return;
+	}
+    
+    
     document.getElementById('question-section').classList.remove('hidden');
     document.getElementById('automaton').classList.add('hidden');
 
-    const cexInput = document.getElementById('counterexample').value;
-    const cexLenght = cexInput.length;
-
-    for (var i = 1; i <= cexLenght; i++) {
+    for (var i = 1; i <= cexLength; i++) {
 	S.add(cexInput.substring(0, i));
     }
 
