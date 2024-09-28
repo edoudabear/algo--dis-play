@@ -1,16 +1,27 @@
 // Variables for managing state
 let alphabet = [];
 
-// The set of starting element
+// The set of prefixes
 let S = new Set();
 S.add("ε");
 
+// The set of suffixes
 let E = new Set();
 E.add("ε");
 
+// Dictionnary containing word we already asked for
+//   for each asked word it will contain true is the user answered yes, false elsewise
 let memoized_words = {};
+
+// Dictionnary representing the result of T over (S U SA, E) where A is the alphabet
+//   note: is it recomputed each time in order not to bother to find where things are
+//         this is not a huge issue, since everything is memoized (so no additionnal user request)
+//   note2: we leverage the fact that iterating over the sets is always done in the same order
+//          during an execution. Hence, rows can be stored as prefix -> bool list (the list being
+//          in the order corresponding to the iteration over E).
 let rows = {};
 
+// Helper function that concatenates two words. This helps get rid of unnecessary empty words
 function concat_words(a, b) {
     if (a == "ε") 
 	return b;
@@ -18,11 +29,12 @@ function concat_words(a, b) {
 	if (b == "ε") {
 	    return a;
 	} else {
-	    return word = a+'·'+b;
+	    return word = a+b;
 	}
     }
 }
 
+// Helper function that return true iff the array a and b are the same
 function compareRows(a, b) {
   if (a === b) return true;
   if (a == null || b == null) return false;
@@ -34,6 +46,7 @@ function compareRows(a, b) {
   return true;
 }
 
+// Helper function that return the first suffix causing array a and b to be different
 function first_difference(a, b) {
     var i = 0;
     for (; i < a.length; ++i) {
@@ -47,14 +60,17 @@ function first_difference(a, b) {
     }
 }
 
+// The core function for asking the user wether a word is in the language
+//   It returns a "promise" so that the user can respond at anytime and we
+//   stop the rest of the computation until we get a response
 async function ask_for_T(word) {
     const questionElement = document.getElementById('question');
 
     question = 'Is the word "' + word + '" inside your langage?';
     questionElement.textContent = question;
 
-    // Force a small delay to ensure the DOM update is rendered
-    await new Promise(resolve => setTimeout(resolve, 0));
+    // // Force a small delay to ensure the DOM update is rendered
+    // await new Promise(resolve => setTimeout(resolve, 0));
 
     
     return new Promise((contained) => {
@@ -95,7 +111,10 @@ async function T(s, e) {
     return memoized_words[word];
 }
 
+// Construct a graphviz representation of the graph implied by the observations
 async function constructGraphAutomaton() {
+
+    // Go through everyone once so we construct only one state per different row value
     let nodes = {};
     for (const s of S) {
 	if (! (rows[s] in nodes)) {
@@ -119,7 +138,8 @@ async function constructGraphAutomaton() {
 	    graph += '\t "' + node + '" -> "' + rows[concat_words(start, a)] + '" [ label = "' + a + '"];\n';
 	}
     }
-     graph += '\t "i" -> "' + rows["ε"] + '";\n';
+    // add the initial state
+    graph += '\t "i" -> "' + rows["ε"] + '";\n';
     
     graph += "}";
     
@@ -161,6 +181,9 @@ function is_closed() {
     return null;
 }
 
+// Wether the current rows describe a consistent observation tables
+//   It returns null if the table is consistent
+//   ... else it returns a counter example containing all the data in a dictionnary
 function is_consistent() {
     for (const s1 of S) {
 	for (const s2 of S) {
@@ -184,6 +207,7 @@ function is_consistent() {
     return null;
 }
 
+// Recompute the rows with the observation of S and S U A
 async function compute_rows() {
     rows = {};
     for (const s of S) {
@@ -200,6 +224,8 @@ async function compute_rows() {
     }
 }
 
+
+// Goes through the L* algorithm until we can construct a guessed automaton
 async function L_star_algorithm() {
 
     await compute_rows();
@@ -241,6 +267,8 @@ document.getElementById('submitAlphabet').addEventListener('click', function() {
     }
 });
 
+// When we propose a guess to the user, we wait for a counterexample
+//   if one is provided, add the corresponding prefixes, and go back executing L*
 document.getElementById('submitCounterexample').addEventListener('click', function() {
 
     document.getElementById('question-section').classList.remove('hidden');
@@ -250,28 +278,13 @@ document.getElementById('submitCounterexample').addEventListener('click', functi
     const cexLenght = cexInput.length;
 
     for (var i = 1; i <= cexLenght; i++) {
-	let word_to_add = cexInput.charAt(0);
-	for (var j = 1; j < i; j++) {
-	    word_to_add += '·'+cexInput.charAt(j);
-	}
-	S.add(word_to_add);
+	S.add(cexInput.substring(0, i));
     }
 
     L_star_algorithm();
     
 });
 
-// Function to ask the current question
-function askQuestion() {
-    const questionElement = document.getElementById('question');
-    if (currentQuestionIndex < questions.length) {
-	questionElement.textContent = questions[currentQuestionIndex];
-    } else {
-	document.getElementById('question-section').classList.add('hidden');
-	document.getElementById('automaton').classList.remove('hidden');
-	renderGraph(automatonGraphData); // Display automaton after questions
-    }
-}
 
 
 
