@@ -101,12 +101,17 @@ function renderTable() {
 	    let word = concat_words(prefix, suffix);
 	    const cell = document.createElement('td');
 	    if (word in memoized_words) {
-		if (memoized_words[word])
+		if (memoized_words[word]) {
 		    cell.textContent = 1;
-		else
+		    cell.classList.add('green-background');
+		} else {
 		    cell.textContent = 0;
-	    } else
+		    cell.classList.add('red-background');
+		}
+	    } else {
 		cell.textContent = '?';
+		cell.classList.add('yellow-background');
+	    }
 	    newRow.appendChild(cell);
 	});
 
@@ -136,12 +141,17 @@ function renderTable() {
 		let word = concat_words(new_prefix, suffix);
 		const cell = document.createElement('td');
 		if (word in memoized_words) {
-		    if (memoized_words[word])
+		    if (memoized_words[word]) {
 			cell.textContent = 1;
-		    else
+			cell.classList.add('green-background');
+		    } else {
 			cell.textContent = 0;
-		} else
+			cell.classList.add('red-background');
+		    }
+		} else {
 		    cell.textContent = '?';
+		    cell.classList.add('yellow-background');
+		}
 		newRow.appendChild(cell);
 	    });
 	    // Append the new row to the table body
@@ -328,10 +338,12 @@ async function L_star_algorithm() {
 	unclosed_example = is_closed();
 	if (unconsistent_example != null) {
 	    E.add(concat_words(unconsistent_example["a"], unconsistent_example["e"]));
+	    renderTable();
 	    continue;
 	}
 	if (unclosed_example != null) {
 	    S.add(unclosed_example);
+	    renderTable();
 	    continue;
 	}	
     }
@@ -381,7 +393,7 @@ document.getElementById('submitCounterexample').addEventListener('click', functi
     
     for (var i = 0; i < cexLength; i++)
 	if (!(alphabet.has(cexInput.charAt(i)))) {
-	    alert("The character '"+cexInput.charAt(i)+"' of your counterexample is not one the given alphabet!");
+	    alert("The character '"+cexInput.charAt(i)+"' of your counterexample is not one in the given alphabet!");
 	    return;
 	}
     

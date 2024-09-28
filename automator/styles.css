@@ -35,3 +35,16 @@ th, td {
     border: none;
     height: 10px;
 }
+
+/* Example color classes */
+.green-background {
+    background-color: lightgreen;
+}
+
+.red-background {
+    background-color: lightcoral;
+}
+
+.yellow-background {
+    background-color: lightyellow;
+}
