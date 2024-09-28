@@ -18,7 +18,7 @@ function concat_words(a, b) {
 	if (b == "ε") {
 	    return a;
 	} else {
-	    return word = a+b;
+	    return word = a+'·'+b;
 	}
     }
 }
@@ -250,7 +250,11 @@ document.getElementById('submitCounterexample').addEventListener('click', functi
     const cexLenght = cexInput.length;
 
     for (var i = 1; i <= cexLenght; i++) {
-	S.add(cexInput.substring(0, i));
+	let word_to_add = cexInput.charAt(0);
+	for (var j = 1; j < i; j++) {
+	    word_to_add += '·'+cexInput.charAt(j);
+	}
+	S.add(word_to_add);
     }
 
     L_star_algorithm();
