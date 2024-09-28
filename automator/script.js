@@ -105,7 +105,7 @@ async function constructGraphAutomaton() {
 	    }
 	}
     }
-    let graph = 'digraph finite_state_machine {\n\trankdir=LR;\n\tsize="8,5"\n'
+    let graph = 'digraph finite_state_machine {\n\trankdir=LR;\n\tsize="8,5"\n\t"i" [style=invis];\n'
 
     for (var node in nodes) {
 	let accepting = nodes[node]["accepting"];
@@ -119,25 +119,13 @@ async function constructGraphAutomaton() {
 	    graph += '\t "' + node + '" -> "' + rows[concat_words(start, a)] + '" [ label = "' + a + '"];\n';
 	}
     }
-    
+     graph += '\t "i" -> "' + rows["ε"] + '";\n';
     
     graph += "}";
+    
     return graph;
 }
 
-// Sample DOT data for automaton display
-const automatonGraphData = `
-  digraph finite_state_machine {
-    rankdir=LR;
-    size="8,5"
-    node [shape = doublecircle]; q1;
-    node [shape = circle];
-    q0 -> q1 [ label = "a" ];
-    q1 -> q2 [ label = "b" ];
-    q2 -> q3 [ label = "c" ];
-    q3 -> q0 [ label = "d" ];
-  }
-`;
 
 // Function to render a graph using Graphviz's DOT syntax
 function renderGraph(dotData) {
