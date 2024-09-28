@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Automaton Interaction</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    #automaton {
+      margin-top: 20px;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Alphabet & Automaton</h1>
+  
+  <div id="alphabet-input">
+    <h2>Provide an Alphabet</h2>
+    <label for="alphabet">Enter a comma-separated alphabet (e.g., a,b,c):</label><br>
+    <input type="text" id="alphabet" placeholder="a,b,c">
+    <button id="submitAlphabet">Submit Alphabet</button>
+  </div>
+  
+  <div id="question-section" class="hidden">
+    <h2>Answer Yes or No</h2>
+    <p id="question"></p>
+    <button id="yesButton">Yes</button>
+    <button id="noButton">No</button>
+  </div>
+  
+  <div id="automaton" class="hidden">
+    <h2>Automaton Representation</h2>
+    <div id="graph"></div>
+    <p>Is your language represented by this automaton? If it is not, give me an example of a word I am missjudging.</p>
+    <p>(either a word in your language I don't recognize, or a word I recognize that is not part of your langage)</p>
+    <input type="text" id="counterexample" placeholder="">
+    <button id="submitCounterexample">Submit Counterexample</button>
+
+  </div>
+
+  <!-- Graphviz via viz.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/viz.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/full.render.js"></script>
+  
+  <script src="script.js"></script>
+</body>
+</html>
