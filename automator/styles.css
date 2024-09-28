@@ -1,0 +1,37 @@
+body {
+    font-family: Arial, sans-serif;
+}
+#automaton {
+    margin-top: 20px;
+}
+.hidden {
+    display: none;
+}
+
+/* Make the table bigger */
+table {
+    width: 100%;
+    margin: 20px 0;
+    border-collapse: collapse; /* Ensures the borders are combined properly */
+}
+
+/* Define borders for table, header cells, and data cells */
+th, td {
+    border: 2px solid black; /* Thicker borders for visibility */
+    padding: 15px;           /* Increase padding to make cells bigger */
+    text-align: left;        /* Align text to the left */
+    font-size: 18px;         /* Increase the font size for better readability */
+}
+
+/* Style for the splitting line */
+.splitting-line {
+    background-color: #000;  /* Make it black */
+    height: 10px;            /* Increase its height */
+}
+
+/* Make the splitting line span across all columns */
+.splitting-line td {
+    padding: 0;
+    border: none;
+    height: 10px;
+}
