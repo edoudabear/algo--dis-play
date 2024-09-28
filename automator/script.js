@@ -256,15 +256,21 @@ document.getElementById('submitAlphabet').addEventListener('click', function() {
     alphabet = alphabetInput.split(',').map(letter => letter.trim()).filter(Boolean); // Filter out empty strings
     
 
-    if (alphabet.length > 0) {
-	document.getElementById('alphabet-input').classList.add('hidden');
-	document.getElementById('question-section').classList.remove('hidden');
-
-	L_star_algorithm();
-	
-    } else {
+    if (alphabet.length == 0) {
 	alert("Your alphabet is empty!");
+	return;
     }
+
+    for (const a of alphabet)
+	if (a.length != 1) {
+	    alert("The letter '"+a+"' is not a valid letter. Please remove it.")
+	    return;
+	}
+	
+    document.getElementById('alphabet-input').classList.add('hidden');
+    document.getElementById('question-section').classList.remove('hidden');
+    
+    L_star_algorithm();	
 });
 
 // When we propose a guess to the user, we wait for a counterexample
