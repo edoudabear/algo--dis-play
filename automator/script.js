@@ -60,6 +60,89 @@ function first_difference(a, b) {
     }
 }
 
+// Function to render the table dynamically
+function renderTable() {
+    // Get the table head and body elements
+    const tableHead = document.querySelector('#dataTable thead');
+    const tableBody = document.querySelector('#dataTable tbody');
+
+    // Clear existing table content (both head and body)
+    tableHead.innerHTML = '';
+    tableBody.innerHTML = '';
+
+    // Create a new header row
+    const headerRow = document.createElement('tr');
+    // First column will have an empty header
+    const th = document.createElement('th');
+    th.textContent = ""
+    headerRow.appendChild(th);
+    E.forEach(suffix => {
+	const th = document.createElement('th');
+	th.textContent = suffix; 
+	headerRow.appendChild(th);
+    });
+
+    // Append the header row to the table head
+    tableHead.appendChild(headerRow);
+
+
+    // Loop through the data array and generate rows dynamically
+    S.forEach((prefix) => {
+	const newRow = document.createElement('tr');
+
+	// First column contains the prefix
+	const cell = document.createElement('td');
+	cell.textContent = prefix;
+	newRow.appendChild(cell);
+	
+	
+	// Create a cell for each piece of data in the object
+	Object.values(rows[prefix]).forEach(value => {
+	    const cell = document.createElement('td');
+	    if (value)
+		cell.textContent = 1;
+	    else
+		cell.textContent = 0;
+	    newRow.appendChild(cell);
+	});
+
+	// Append the new row to the table body
+	tableBody.appendChild(newRow);
+    });
+
+    const splittingRow = document.createElement('tr');
+    splittingRow.classList.add('splitting-line');
+    const splittingCell = document.createElement('td');
+    splittingCell.colSpan = E.size + 1; // Make the splitting line span across all columns
+    splittingRow.appendChild(splittingCell);
+    tableBody.appendChild(splittingRow);
+
+    // Loop through the data array and generate rows dynamically
+    S.forEach((prefix) => {
+	alphabet.forEach(letter => {
+	    const newRow = document.createElement('tr');
+	    let word = concat_words(prefix, letter)
+	    // First column contains the prefix
+	    const cell = document.createElement('td');
+	    cell.textContent = word;
+	    newRow.appendChild(cell);
+	    
+	    // Create a cell for each piece of data in the object
+	    Object.values(rows[word]).forEach(value => {
+		const cell = document.createElement('td');
+		if (value)
+		    cell.textContent = 1;
+		else
+		    cell.textContent = 0;
+		newRow.appendChild(cell);
+	    });
+
+	    // Append the new row to the table body
+	    tableBody.appendChild(newRow);
+	})
+    });
+}
+
 // The core function for asking the user wether a word is in the language
 //   It returns a "promise" so that the user can respond at anytime and we
 //   stop the rest of the computation until we get a response
@@ -222,6 +305,7 @@ async function compute_rows() {
 	    }
 	}
     }
+    renderTable();
 }
 
 
