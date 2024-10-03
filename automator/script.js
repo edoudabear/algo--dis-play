@@ -426,13 +426,12 @@ async function L_star_algorithm() {
     renderGraph(automaton_guess);
     // Arbitrary size 3; should be modified
     let recognized_words = [];
-    let words = enumerate_words(3);
-    enumerate_words(3).forEach( word => {
+    enumerate_words(10).forEach( word => {
 	if (is_word_in_automaton(word))
 	    recognized_words.push(word);
     });
-    recognized_words.sort();
-    document.getElementById('first_words').textContent = recognized_words.join(", ");
+    recognized_words.sort((a, b) => a.length - b.length || a.localeCompare(b));
+    document.getElementById('first_words').textContent = recognized_words.slice(0,10).join(", ");
 
 }
 
