@@ -38,10 +38,10 @@ function concat_words(a, b) {
 function compareRows(a, b) {
   if (a === b) return true;
   if (a == null || b == null) return false;
-  if (a.length !== b.length) return false;
+  if (a.length != b.length) return false;
 
   for (var i = 0; i < a.length; ++i) {
-    if (a[i] !== b[i]) return false;
+    if (a[i] != b[i]) return false;
   }
   return true;
 }
@@ -58,6 +58,79 @@ function first_difference(a, b) {
 	    return e;
 	i--;
     }
+}
+
+// Function that enumerates in a list all the words with the alphabet under a given size n
+function enumerate_words(max_len) {
+    if (max_len == 0)
+	return new Set("ε");
+    let result = new Set();
+    alphabet.forEach(letter => {
+	enumerate_words(max_len - 1).forEach(suffix => {
+	    result.add(suffix);
+	    result.add(concat_words(letter,suffix));
+	});
+    });
+    return result;
+}
+
+
+function generate_automaton() {
+    let states = new Set();
+    let finals = new Set();
+    let transitions = {};
+    S.forEach (prefix => {
+	let row = rows[prefix];
+	states.add(row);
+	if (rows[prefix][0])
+	    finals.add(row);
+	if (!(row in transitions)) {
+	    transitions[row] = {};
+	    alphabet.forEach (letter => {
+		let new_prefix = concat_words(prefix, letter);
+		(transitions[row])[letter] = rows[new_prefix];
+	    });
+	}
+	
+    });
+
+    let initial = rows["ε"];
+
+    return {
+	states : states,
+	initial : initial,
+	finals : finals,
+	transitions : transitions
+    }
+}
+
+// We have to write this by hand since arrays does not seem to implement equality check
+function state_in_set(state, set_of_states) {
+    for (row of set_of_states) 
+	if (compareRows(row, state))
+	    return true;
+    return false;
+}
+
+function is_word_in_automaton(word) {
+
+    let automaton = generate_automaton();
+    function aux_is_word_in_automaton_at_sate(suffix, state) {
+	if (suffix == "" || suffix == "ε") {
+	    let finals = automaton['finals'];
+	    return state_in_set(state, finals);
+	}
+	
+	let first_letter = suffix.charAt(0);
+	let new_suffix = suffix.substring(1);
+
+	let transitions = automaton['transitions'];
+	let transition_from_state = transitions[state];
+	let new_state = transition_from_state[first_letter];
+	return aux_is_word_in_automaton_at_sate(new_suffix, new_state);
+    }
+
+    return aux_is_word_in_automaton_at_sate(word, automaton['initial']);
 }
 
 // Function to render the table dynamically
@@ -351,6 +424,16 @@ async function L_star_algorithm() {
     document.getElementById('question-section').classList.add('hidden');
     document.getElementById('automaton').classList.remove('hidden');
     renderGraph(automaton_guess);
+    // Arbitrary size 3; should be modified
+    let recognized_words = [];
+    let words = enumerate_words(3);
+    enumerate_words(3).forEach( word => {
+	if (is_word_in_automaton(word))
+	    recognized_words.push(word);
+    });
+    recognized_words.sort();
+    document.getElementById('first_words').textContent = recognized_words.join(", ");
+
 }
 
 // Function to handle alphabet submission
