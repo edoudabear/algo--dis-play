@@ -12,13 +12,11 @@ body {
         visibility : visible;
     }
     90% {
-        height : 100vw;
-        width : 100vw;
+        transform : scale(50);
     }
     100% {
         visibility : none;
-        height : 100px;
-        width : 100px;
+        transform : none;
     }
 }
 
