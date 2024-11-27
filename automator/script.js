@@ -1,3 +1,4 @@
+// version de esgu
 // Variables for managing state
 let alphabet = new Set();
 
