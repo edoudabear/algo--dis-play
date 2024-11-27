@@ -388,3 +388,63 @@ document.getElementById('submitCounterexample').addEventListener('click', functi
     L_star_algorithm();
     
 });
+
+gsap.registerPlugin(MotionPathPlugin);
+
+  // init
+	var tl= new TimelineMax();
+	tl.from('.gface', 0.6, {scale: -0, transformOrigin: "center", ease: Power3.easeOut})
+	tl.from('.eyes', 0.6, {scale: -0, transformOrigin: "center", ease: Power3.easeOut},"-=0.3")
+  
+  // eyes animation
+	var tl2= new TimelineMax();
+	tl2.from('.inside', 0.15, {scaleY: 1, transformOrigin: "center", ease: Linear.easeOut})
+	tl2.to('.inside', 0.05, {scaleY: 0, transformOrigin: "center", ease: Linear.easeOut})
+	.to('.inside', 0.4, {scaleY: 1, transformOrigin: "center", ease: Power3.easeOut})
+
+	var speak = new TimelineMax();
+	speak.from('.mouth', 0.15, {scaleY: 1, scaleX : 1, transformOrigin: "center", ease: Linear.easeOut})
+	.to('.mouth', 0.15, {scaleY: 1.5, scaleX : 0.8, transformOrigin: "center", ease: Linear.easeOut})
+	.to('.mouth', 0.15, {scaleY: 2, transformOrigin: "center", ease: Linear.easeOut})
+	.to('.mouth', 0.15, {scaleY: 1, ScaleX : 1, transformOrigin: "center", ease: Linear.easeOut})
+	speak.repeat(-1)
+	let a = setInterval(()=>{
+		setTimeout(()=>{tl2.play(0)},Math.random()*3000)
+		},3000);
+  
+  let success = new TimelineMax();
+  
+  success.from('.nose',2, {
+    transformOrigin : "center",
+    ease : Power3.easeOut,
+    rotate : "360deg"
+  }).from(".hair",1, {
+        transformOrigin : "center",
+        ease : Power3.easeOut,
+        rotate : "360deg"
+          },"-=2")
+  .to(".inside", 0.5, {
+        transformOrigin : "center",
+        ease : Power3.easeOut,
+        scale : "5",
+  },"-=3").
+  to(".inside", 1, {
+        transformOrigin : "center",
+        ease : Power3.easeOut,
+        transform : "",
+  },"-=2.5");
+  
+  let win= () => {
+    clearInterval(a);
+    speak.play(0);
+    success.play(0);
+    setTimeout(()=>{
+      speak.pause();
+      //tl.play(0);
+      tl2.play(0);
+      a = setInterval(()=>{
+		setTimeout(()=>{tl2.play(0)},Math.random()*3000)
+		},3000);
+    },2000)
+  }
+  
