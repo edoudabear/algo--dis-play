@@ -1,6 +1,46 @@
 body {
     font-family: Arial, sans-serif;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    transition : 0.4s;
 }
+
+#alphabet-input {
+  text-align: center;
+}
+
+button:active {
+  opacity : 0.6;
+}
+
+button:hover {
+  opacity : 0.6;
+}
+
+input[type="text"]:hover {
+  opacity : 0.8;
+}
+
+input[type="text"] {
+  outline: none;
+  border: 2px solid lightskyblue;
+  border-radius: 8px/8px;
+  font-size: 24px;
+  background: gainsboro;
+  color: black;
+}
+
+button {
+  background: lightblue;
+  outline: none;
+  border: 2px solid gainsboro;
+  font-size: 24px;
+  border-radius: 8px/8px;
+  cursor: pointer;
+}
+
 #automaton {
     margin-top: 20px;
 }
