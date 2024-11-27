@@ -8,7 +8,24 @@
 </head>
 <body>
   <h1>Automator</h1>
-  
+
+	<svg class="face" viewBox="0 -10 70 70" >
+<path id="path" d="M 20 20 q 100 50 200 20 q 50 -5 100 0 20 30 20 0 L 20 20" fill="white"></path>
+<g class="person">
+  <ellipse class="gface" cx="27" cy="20" rx="20" ry="22" fill="#ffffa1" style="transform-origin: 0px 0px 0px;" data-svg-origin="27 20" transform="matrix(1,0,0,1,0,0)"></ellipse>
+  <circle class="eyes" cx="14" cy="10" r="8" fill="lightgrey" style="transform-origin: 0px 0px 0px;" data-svg-origin="20 10" transform="matrix(1,0,0,1,0,0)"></circle>
+  <circle class="eyes" cx="40" cy="10" r="8" fill="lightgrey" style="transform-origin: 0px 0px 0px;" data-svg-origin="34 10" transform="matrix(1,0,0,1,0,0)"></circle>
+  <circle class="eyes inside left" cx="14" cy="10" r="4" fill="black" style="transform-origin: 0px 0px 0px; z-index : 250;" data-svg-origin="20 10" transform="matrix(1,0,0,1,0,0)"></circle>
+  <circle class="eyes inside right" cx="40" cy="10" r="4" fill="black" style="transform-origin: 0px 0px 0px; z-index : 250;" data-svg-origin="34 10" transform="matrix(1,0,0,1,0,0)"></circle>
+<path id="arrow" d="M 22 10 Q 27 5 32 10 M 32 9.5 L 31 5 M 32 9 L 29 12 " stroke="blue" stroke-width="1.5" fill="none"/>
+  <path class="nose" style="z-index : 0;"
+        d="M 25 20 l -2 0 l 0 6 l 4 -4 l 4 4 l 0 -6 l -2 0" fill="none" stroke="lightgrey" stroke-width="2" />
+  <path class="mouth" d="M 17 36 q 10 5 20 0 k" fill="lightgrey" style="transform-origin: 0px 0px 0px;" data-svg-origin="27 37.25" transform="matrix(0.8,0,0,1.2333,5.4,-8.69043)"></path>
+  <path class="hair" d="M 27 4 L 27 -6 M 23 -4 L 31 2 
+                     M 31 -4 L 23 2" stroke="black" stroke-width="1.5" fill="none"/>
+</g>
+  Sorry, your browser does not support inline SVG.
+</svg>
   <div id="alphabet-input">
     <h2>Pense à un langage régulier. Quand tu es prêt ...</h2>
     <img id="normalgenie" src="normalgenie.png" style="height: 40vw; min-heigth: 20px;"/>
@@ -17,20 +34,20 @@
     <input type="text" id="alphabet" placeholder="a,b,c">
     <button id="submitAlphabet">OK</button>
   </div>
-  
+
+	
   <div id="question-section" class="hidden">
     <h2>J'ai besoin d'une réponse !</h2>
     <p id="question"></p>
     <button id="yesButton">Oui</button>
     <button id="noButton">Non</button>
-    <img id="normalgenie" src="normalgenie.png" style="height: 40vw; min-heigth: 20px;"/>
   </div>
-  
+
+	
   <div id="automaton" class="hidden">
     <h2>J'ai trouvé !</h2>
     <p>Je pense que ton langage est reconnu par cet automate !</p>
     <div id="graph"></div>
-    <img id="happygenie" src="happygenie.png" style="height: 40vw; min-heigth: 20px;"/>
     <p>Voici les mots de taille au plus 5 reconnus :</p>
     <div id="first_words"></div>
     <p>
