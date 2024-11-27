@@ -133,106 +133,6 @@ function is_word_in_automaton(word) {
     return aux_is_word_in_automaton_at_sate(word, automaton['initial']);
 }
 
-// Function to render the table dynamically
-function renderTable() {
-    // Get the table head and body elements
-    const tableHead = document.querySelector('#dataTable thead');
-    const tableBody = document.querySelector('#dataTable tbody');
-
-    // Clear existing table content (both head and body)
-    tableHead.innerHTML = '';
-    tableBody.innerHTML = '';
-
-    // Create a new header row
-    const headerRow = document.createElement('tr');
-    // First column will have an empty header
-    const th = document.createElement('th');
-    th.textContent = ""
-    headerRow.appendChild(th);
-    E.forEach(suffix => {
-	const th = document.createElement('th');
-	th.textContent = suffix; 
-	headerRow.appendChild(th);
-    });
-
-    // Append the header row to the table head
-    tableHead.appendChild(headerRow);
-
-
-    // Loop through the data array and generate rows dynamically
-    S.forEach((prefix) => {
-	const newRow = document.createElement('tr');
-
-	// First column contains the prefix
-	const cell = document.createElement('td');
-	cell.textContent = prefix;
-	newRow.appendChild(cell);
-	
-	
-	// Create a cell for each piece of data in the object
-	E.forEach(suffix => {
-	    let word = concat_words(prefix, suffix);
-	    const cell = document.createElement('td');
-	    if (word in memoized_words) {
-		if (memoized_words[word]) {
-		    cell.textContent = 1;
-		    cell.classList.add('green-background');
-		} else {
-		    cell.textContent = 0;
-		    cell.classList.add('red-background');
-		}
-	    } else {
-		cell.textContent = '?';
-		cell.classList.add('yellow-background');
-	    }
-	    newRow.appendChild(cell);
-	});
-
-	// Append the new row to the table body
-	tableBody.appendChild(newRow);
-    });
-
-    const splittingRow = document.createElement('tr');
-    splittingRow.classList.add('splitting-line');
-    const splittingCell = document.createElement('td');
-    splittingCell.colSpan = E.size + 1; // Make the splitting line span across all columns
-    splittingRow.appendChild(splittingCell);
-    tableBody.appendChild(splittingRow);
-
-    // Loop through the data array and generate rows dynamically
-    S.forEach((prefix) => {
-	alphabet.forEach(letter => {
-	    const newRow = document.createElement('tr');
-	    let new_prefix = concat_words(prefix, letter)
-	    // First column contains the prefix
-	    const cell = document.createElement('td');
-	    cell.textContent = new_prefix;
-	    newRow.appendChild(cell);
-	    
-	    // Create a cell for each piece of data in the object
-	    E.forEach(suffix => {
-		let word = concat_words(new_prefix, suffix);
-		const cell = document.createElement('td');
-		if (word in memoized_words) {
-		    if (memoized_words[word]) {
-			cell.textContent = 1;
-			cell.classList.add('green-background');
-		    } else {
-			cell.textContent = 0;
-			cell.classList.add('red-background');
-		    }
-		} else {
-		    cell.textContent = '?';
-		    cell.classList.add('yellow-background');
-		}
-		newRow.appendChild(cell);
-	    });
-	    // Append the new row to the table body
-	    tableBody.appendChild(newRow);
-	})
-    });
-}
-
 // The core function for asking the user wether a word is in the language
 //   It returns a "promise" so that the user can respond at anytime and we
 //   stop the rest of the computation until we get a response
@@ -280,7 +180,6 @@ async function T(s, e) {
     let word = concat_words(s, e)
     if (! (word in memoized_words)) {
 	memoized_words[word] = await ask_for_T(word);
-        renderTable();
     }
     return memoized_words[word];
 }
@@ -411,12 +310,10 @@ async function L_star_algorithm() {
 	unclosed_example = is_closed();
 	if (unconsistent_example != null) {
 	    E.add(concat_words(unconsistent_example["a"], unconsistent_example["e"]));
-	    renderTable();
 	    continue;
 	}
 	if (unclosed_example != null) {
 	    S.add(unclosed_example);
-	    renderTable();
 	    continue;
 	}	
     }
@@ -426,12 +323,13 @@ async function L_star_algorithm() {
     renderGraph(automaton_guess);
     // Arbitrary size 3; should be modified
     let recognized_words = [];
-    enumerate_words(10).forEach( word => {
+    let words = enumerate_words(3);
+    enumerate_words(3).forEach( word => {
 	if (is_word_in_automaton(word))
 	    recognized_words.push(word);
     });
-    recognized_words.sort((a, b) => a.length - b.length || a.localeCompare(b));
-    document.getElementById('first_words').textContent = recognized_words.slice(0,10).join(", ");
+    recognized_words.sort();
+    document.getElementById('first_words').textContent = recognized_words.join(", ");
 
 }
 
@@ -457,7 +355,6 @@ document.getElementById('submitAlphabet').addEventListener('click', function() {
     document.getElementById('alphabet-input').classList.add('hidden');
     document.getElementById('question-section').classList.remove('hidden');
     document.getElementById('observation-table-container').classList.remove('hidden');
-    renderTable();
     L_star_algorithm();	
 });
 
@@ -490,7 +387,3 @@ document.getElementById('submitCounterexample').addEventListener('click', functi
     L_star_algorithm();
     
 });
-
-
-
-
