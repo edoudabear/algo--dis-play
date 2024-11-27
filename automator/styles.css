@@ -7,6 +7,16 @@ body {
     transition : 0.4s;
 }
 
+.wowo-animation {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,0);
+  width: 100px;
+  height: 100px;
+  background: pink;
+}
+
 #alphabet-input {
   text-align: center;
 }
