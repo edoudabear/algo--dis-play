@@ -319,6 +319,8 @@ async function L_star_algorithm() {
 	}	
     }
     let automaton_guess = await constructGraphAutomaton();
+    document.querySelector(".wowo-animation").style.animation = "make_wowo 2s";
+    setTimeout(() => { document.querySelector(".wowo-animation").style.animation = "make_wowo 2s" },2000);
     document.getElementById('question-section').classList.add('hidden');
     document.getElementById('automaton').classList.remove('hidden');
     renderGraph(automaton_guess);
