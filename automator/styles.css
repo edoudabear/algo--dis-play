@@ -7,6 +7,21 @@ body {
     transition : 0.4s;
 }
 
+@keyframes make_wowo {
+    0% {
+        visibility : visible;
+    }
+    90% {
+        height : 100vw;
+        width : 100vw;
+    }
+    100% {
+        visibility : none;
+        height : 100px;
+        width : 100px;
+    }
+}
+
 .wowo-animation {
   position: fixed;
   top: 50%;
@@ -15,6 +30,9 @@ body {
   width: 100px;
   height: 100px;
   background: pink;
+  border-radius: 50%/50%;
+  visibility: hidden;
+  overflow: hidden;
 }
 
 #alphabet-input {
