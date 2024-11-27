@@ -1,6 +1,6 @@
 // Variables for managing state
 let alphabet = new Set();
- 
+
 // The set of prefixes
 let S = new Set();
 S.add("ε");
