@@ -10,33 +10,39 @@
   <h1>Automator</h1>
   
   <div id="alphabet-input">
-    <h2>Provide an Alphabet</h2>
-    <label for="alphabet">Enter a comma-separated alphabet (e.g., a,b,c):</label><br>
+    <h2>Pense à un langage régulier. Quand tu es prêt ...</h2>
+    <img id="normalgenie" src="normalgenie.png" style="height: 40vw; min-heigth: 20px;"/>
+    <h2>... donne-moi l'alphabet ! </h2>
+    <label for="alphabet">Séparer les lettres par une virgule (e.g., a,b,c):</label><br>
     <input type="text" id="alphabet" placeholder="a,b,c">
-    <button id="submitAlphabet">Submit Alphabet</button>
+    <button id="submitAlphabet">OK</button>
   </div>
   
   <div id="question-section" class="hidden">
-    <h2>Answer Yes or No</h2>
+    <h2>J'ai besoin d'une réponse !</h2>
     <p id="question"></p>
-    <button id="yesButton">Yes</button>
-    <button id="noButton">No</button>
+    <button id="yesButton">Oui</button>
+    <button id="noButton">Non</button>
+    <img id="normalgenie" src="normalgenie.png" style="height: 40vw; min-heigth: 20px;"/>
   </div>
   
   <div id="automaton" class="hidden">
-    <h2>Automaton Representation</h2>
+    <h2>J'ai trouvé !</h2>
+    <p>Je pense que ton langage est reconnu par cet automate !</p>
     <div id="graph"></div>
-    <p>Here are the some words this automaton recognizes:</p>
+    <img id="happygenie" src="happygenie.png" style="height: 40vw; min-heigth: 20px;"/>
+    <p>Voici les mots de taille au plus 5 reconnus :</p>
     <div id="first_words"></div>
-    <p>Is your language represented by this automaton? If it is not, give me an example of a word I am missjudging.</p>
-    <p>(either a word in your language I don't recognize, or a word I recognize that is not part of your langage)</p>
+    <p>
+	Si je me suis trompé, donne-moi un contre-exemple</p>
+    <p>(soit un mot dans ton langage qui n'est pas reconnu, soit un mot reconnu qui n'est pas dans ton langage).</p>
     <input type="text" id="counterexample" placeholder="">
-    <button id="submitCounterexample">Submit Counterexample</button>
+    <button id="submitCounterexample">OK</button>
 
   </div>
 
   <div id="observation-table-container" class="hidden">
-    <h1>Dynamically Generated Observation Table</h1>
+    <h1> </h1>
 
     <table id="dataTable">
       <thead>
@@ -47,10 +53,11 @@
       </tbody>
     </table>
   </div>
+  
   <!-- Graphviz via viz.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/viz.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/full.render.js"></script>
   
-  <script src="script.js"></script>
+  <script src="automator.js"></script>
 </body>
 </html>
