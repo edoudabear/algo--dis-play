@@ -45,6 +45,10 @@ th, td {
     background-color: lightcoral;
 }
 
+svg {
+    height : 50vh;
+}
+
 .yellow-background {
     background-color: lightyellow;
 }
